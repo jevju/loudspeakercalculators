@@ -10,12 +10,42 @@ font-size: 18px;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif,
     monospace;
 }
 
+.list-item{
+    lineHeight: 48px;
+    height: 48px;
+    box-sizing: border-box;
+    position: static;
+    float: none;
+    display: block;
+    padding: 32px;
+    color: rgba(0; 0; 0; 0.87);
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    font-height: 500;
+    line-height: 48px;
+    padding: 0 32px;
+    cursor: pointer;
+}
 
+.list-item:hover{
+    background-color: rgba(0,0,0,0.05);
+}
 
+.list-item.sub-header{
+    color: rgba(0, 0, 0, 0.54);
+    background-color: #fff;
+    cursor: default;
+}
+
+.list-item.active{
+    background-color: #ee6e73;
+    cursor: default;
+}
 
 .flex-direction{
     display: flex;

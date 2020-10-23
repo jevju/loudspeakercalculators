@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-import M from 'materialize-css'
+// import M from 'materialize-css'
 import 'materialize-css/dist/css/materialize.min.css'
 
 ReactDOM.render(

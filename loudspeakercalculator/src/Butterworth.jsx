@@ -1,68 +1,37 @@
-
-
 import React from 'react';
 
-// Source:
-// https://www.diyaudioandvideo.com/Calculator/ContourNetwork/
-// https://www.diyaudioandvideo.com/Calculator/ContourNetwork/Help/
 
-export default class CountourNetwork extends React.Component{
-
+export default class Butterworth extends React.Component{
     constructor(){
         super();
 
         this.fields=[
             {
-                'name': 'f',
+                'name': 'fc',
                 'unit': 'Hz',
-                'description': 'Frequency where signal begins to rise'
+                'description': 'Cutoff frequency'
             },
             {
-                'name': 'fm',
-                'unit': 'Hz',
-                'description': 'Frequency at maximum attenuation'
+                'name': 'Z0',
+                'unit': 'Ohm',
+                'description': 'Impedance'
             },
             {
-                'name': 'At',
-                'unit': 'db',
-                'description': 'Maximum attenuation at fm'
-            },
-            {
-                'name': 'Rd',
-                'unit': 'Ohms',
-                'description': 'Total driver impedance'
+                'name': 'n',
+                'unit': '(1-10)',
+                'description': 'Order'
             }
         ]
 
         this.state={
             values: {},
             result: {},
-            type: 'rc',
+            type: 'lp' //LowPass/ HighPass/ BandPass
         };
 
         this.onCalcSelect = this.onCalcSelect.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-    }
-
-    resultCalculated(){
-
-        if(!this.state.result){
-            return false;
-        }
-
-        if(!('c' in this.state.result)){
-            return false;
-        }
-        if(!('r' in this.state.result)){
-            return false;
-        }
-
-        if((this.state.result['c'].length < 1) || (this.state.result['r'].length < 1)){
-            return false;
-        }
-
-        return true;
     }
 
     fieldsFilledOut(){
@@ -80,6 +49,7 @@ export default class CountourNetwork extends React.Component{
     }
 
     calculate(){
+        return;
         var res = this.state.result;
         const k = 15916;
 
@@ -104,9 +74,11 @@ export default class CountourNetwork extends React.Component{
         this.setState({result: res});
     }
 
+
     onCalcSelect(c){
         this.setState({type:c});
     }
+
 
     handleChange(e){
         var values = this.state.values;
@@ -120,6 +92,34 @@ export default class CountourNetwork extends React.Component{
         if(this.fieldsFilledOut()){
             this.calculate()
         }
+    }
+
+
+    renderTabs(){
+
+
+        return(
+            <div>
+                <div className="row" style={{width: '300px', marginLeft:'0px'}}>
+                    <div className="col s12">
+                        <ul className="tabs">
+                            <li className="tab col s6">
+                                <a className={this.state.type === 'hp'? 'active': null} href="#" onClick={()=>this.onCalcSelect('hp')}>High Pass
+                                </a>
+                            </li>
+
+                            <li className="tab col s6">
+                                <a className={this.state.type === 'lp'? 'active': null} href="#" onClick={()=>this.onCalcSelect('lp')}>Low Pass
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+
+            </div>
+        )
+
     }
 
 
@@ -158,70 +158,20 @@ export default class CountourNetwork extends React.Component{
                     </button>
 
                 </form>
-                Note: fm interval 1-2000 Hz
             </div>
         )
-    }
-
-    renderResult(){
-
-
-        if(!this.resultCalculated()){
-            return;
-        }
-
-
-
-        return(
-            <div>
-                Capacitor: {this.state.result['c'].toFixed(2)} uF <br/>
-                Resistor: {this.state.result['r'].toFixed(2)} Ohms <br/>
-            </div>
-        )
-
-
     }
 
     render(){
 
 
-
-
         return(
             <div>
-                <h3>Contour Network</h3>
-
-                    <div className="row" style={{width: '300px', marginLeft:'0px'}}>
-                        <div className="col s12">
-                          <ul className="tabs">
-                              <li className="tab col s6">
-                                  <a className={this.state.type === 'rc'? 'active': null} href="#" onClick={()=>this.onCalcSelect('rc')}>RC
-                                      <i className="material-icons">keyboard_arrow_up</i>
-                                  </a>
-                              </li>
-
-                            <li className="tab col s6">
-                                <a className={this.state.type === 'rl'? 'active': null} href="#" onClick={()=>this.onCalcSelect('rl')}>RL
-                                    <i className="material-icons">keyboard_arrow_down</i>
-                                </a>
-                            </li>
-
-                          </ul>
-                        </div>
-
-                      </div>
-                
-
-
-                <div className='flex-direction'>
-                    <div style={{width: '300px'}}>
-                        {this.renderForm()}
-                    </div>
-                    <div style={{width: '300px'}}>
-                        {this.renderResult()}
-                    </div>
+                <h3>Butterworth</h3>
+                <div style={{width: '300px'}}>{this.renderTabs()}</div>
+                <div style={{width: '300px'}}>
+                    {this.renderForm()}
                 </div>
-
             </div>
         )
     }
